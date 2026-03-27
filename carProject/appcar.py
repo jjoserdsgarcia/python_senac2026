@@ -26,7 +26,6 @@ def vehicle_register():
 
 
 def vehicle_list():
-   def vehicle_list():
     print("\n--- VEHICLE LIST ---")
 
     if not database:
