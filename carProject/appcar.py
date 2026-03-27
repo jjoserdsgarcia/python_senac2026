@@ -7,89 +7,110 @@ database = []
 
 
 def vehicle_register():
-    tipo = input("Tipo (carro/moto): ")
-    marca = input("Marca: ")
-    modelo = input("Modelo: ")
-    ano = input("Ano: ")
+    print("\n--- REGISTER VEHICLE ---")
+    
+    name = input("Owner's Name: ")
+    type = input("Vehicle Type: ")
+    brand = input("Brand: ")
+    release_year = int(input("Release Year: "))
     cep = input("CEP: ")
-
     endereco = find_cep(cep)
+    if endereco is None:
+        print("Não foi possível encontrar o endereço para o CEP fornecido.")
+        return
 
-    if endereco:
-        v = Vehicles(tipo, marca, modelo, ano, cep, endereco)
-        database.append(v.to_dict())
-        print(" Veículo cadastrado com sucesso!")
-    else:
-        print("Erro ao cadastrar veículo.")
+    vehicle = Vehicles(name, type, brand, release_year, cep, endereco)
+    database.append(vehicle.to_dict())
+    print("Veículo cadastrado com sucesso!")
+    return True
 
 
 def vehicle_list():
-    print("\n--- FROTA DE VEÍCULOS ---")
+   def vehicle_list():
+    print("\n--- VEHICLE LIST ---")
 
     if not database:
         print("Nenhum veículo cadastrado.")
         return
 
     for i, v in enumerate(database):
-        print(f"\n{i}. {v['tipo'].upper()} - {v['marca']} {v['modelo']}")
-        print(f"Ano: {v['ano']}")
-        print(f"Local: {v['endereco']['localidade']} - {v['endereco']['uf']}")
+        print(f"\n{i}. {v['name']} - {v['type']} - {v['brand']} ({v['release_year']})")
         print(f"CEP: {v['cep']}")
-
+        print(f"Cidade: {v['endereco']['localidade']} - {v['endereco']['uf']}")
 
 def remove_vehicle():
+    print("\n--- REMOVE VEHICLE ---")
     vehicle_list()
-    idx = int(input("\nDigite o número do veículo para remover: "))
-
+    idx = int(input("Digite o número do veículo para remover: "))
     if 0 <= idx < len(database):
-        database.pop(idx)
-        print("Veículo removido com sucesso!")
+        removed_vehicle = database.pop(idx)
+        print(f"Veículo de '{removed_vehicle['name']}' removido com sucesso!")
     else:
-        print("Número inválido.")
-
+        print("Número de veículo inválido.")
 
 def salvar():
-    with open("veiculos.json", "w") as f:
-        json.dump(database, f, indent=4)
-    print("Banco salvo com sucesso!")
+    with open("vehicles.json", "w") as f:
+        json.dump(database, f)
+    print("Dados salvos com sucesso!")
 
 
 def carregar():
     global database
     try:
-        with open("veiculos.json", "r") as f:
+        with open("vehicles.json", "r") as f:
             database = json.load(f)
-        print("Banco carregado com sucesso!")
+        print("Dados carregados com sucesso!")
     except FileNotFoundError:
-        print("Arquivo não encontrado.")
+        print("Nenhum arquivo de dados encontrado. Iniciando com um banco de dados vazio.")
+
+def search_by_cep():
+    cep_busca = input("Digite o CEP: ")
+
+    encontrados = [v for v in database if v['cep'] == cep_busca]
+
+    if encontrados:
+        for v in encontrados:
+            print(f"{v['name']} - {v['brand']} ({v['release_year']})")
+    else:
+        print("Nenhum veículo encontrado.")
 
 
+
+
+
+while True:
     print("\n--- DEALERSHIP SYSTEM ---")
     print("1. Cadastrar Veículo")
     print("2. Listar Veículos")
     print("3. Remover Veículo")
     print("4. Salvar Dados")
     print("5. Carregar Dados")
+    print("6. Buscar CEP")
     print("0. Sair")
 
     while True:
-        opcao = input("Escolha: ")
+        opcao = input("Escolha uma opção: ")
 
         if opcao == "1":
-         vehicle_register()
-
+            vehicle_register()
+            break
         elif opcao == "2":
-         vehicle_list ()
-
+            vehicle_list()
+            break
         elif opcao == "3":
-          remove_vehicle()
-
+            remove_vehicle()
+            break
         elif opcao == "4":
-          salvar()
-
+            salvar()
+            break
         elif opcao == "5":
             carregar()
-
+            break
+        elif opcao == "6":
+            search_by_cep()
+            break
         elif opcao == "0":
-         print("Encerrando sistema...")
-        break
+            print("Saindo do sistema. Até logo!")
+            exit()
+        else:
+            print("Opção inválida. Por favor, tente novamente.")
