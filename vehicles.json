@@ -86,5 +86,27 @@
             "ddd": "51",
             "siafi": "8817"
         }
+    },
+    {
+        "name": "Jos\u00e9 Garcia",
+        "type": "carro",
+        "brand": "asda",
+        "release_year": 2026,
+        "cep": "96640000",
+        "endereco": {
+            "cep": "96640-000",
+            "logradouro": "",
+            "complemento": "",
+            "unidade": "",
+            "bairro": "",
+            "localidade": "Rio Pardo",
+            "uf": "RS",
+            "estado": "Rio Grande do Sul",
+            "regiao": "Sul",
+            "ibge": "4315701",
+            "gia": "",
+            "ddd": "51",
+            "siafi": "8817"
+        }
     }
 ]
