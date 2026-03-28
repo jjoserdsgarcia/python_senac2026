@@ -1,7 +1,6 @@
 from modelscars import Vehicles
 import json
 from APIviaCEP import find_cep
-import requests
 
 database = []
 
