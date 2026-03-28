@@ -49,7 +49,7 @@ def remove_vehicle():
 
 def salvar():
     with open("vehicles.json", "w") as f:
-        json.dump(database, f)
+        json.dump(database, f, indent=4)
     print("Dados salvos com sucesso!")
 
 
